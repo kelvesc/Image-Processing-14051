@@ -10,6 +10,32 @@ IMAGE_IO_FLAGS = -ljpeg `libpng-config --cflags --ldflags`
 
 TARGET=host
 
+ifndef AUTOSCHEDULER
+	AUTOSCHEDULER=false
+endif
+ifeq ($(AUTO_SCHEDULE), true)
+	ifndef AUTO_SCHEDULER
+		AUTO_SCHEDULER=mullapudi2016
+	endif
+	AUTO_SCHEDULER_PARS=auto_schedule=true -p $(HALIDE_ROOT)/lib/libautoschedule_$(AUTO_SCHEDULER).so
+	ifdef MACHINE_PARAMS
+		AUTO_SCHEDULER_PARS+=machine_params=$(MACHINE_PARAMS)
+	endif
+endif
+GPARS=
+ifdef VERSION
+	GPARS=version=$(VERSION)
+endif
+
+ifndef PATH_IN
+	PATH_IN=../inputs/
+endif
+
+ifndef OUT_PREFIX
+	OUT_PREFIX=outputs/grayscale
+endif
+
+
 all: test
 
 clean:
@@ -28,7 +54,7 @@ bin/main: src/main.cpp bin/rgb2gray.o
 
 test: bin/main
 	@mkdir -p outputs
-	@for i in `find "../inputs/" -type f -name "*.jpg"`; do $^ $$i outputs/`basename $$i`; done
+	@for i in `find $(PATH_IN) -type f -name "*.jpg"`; do $^ $$i $(OUT_PREFIX)_`basename $$i`; done
 	#@pytest
 
 .PHONY: all clean
