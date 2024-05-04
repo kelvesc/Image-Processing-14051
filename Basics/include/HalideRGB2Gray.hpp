@@ -36,11 +36,7 @@ class HalideRGB2Gray : public Generator<HalideRGB2Gray> {
     private:
         Var x{"x"}, y{"y"}, c{"c"};
         Func input_f32{"input_f32"};
-        // Func compL{"compute_L"}, compa{"compute_a"}, compb{"compute_b"};
 
-        Expr f(Expr t) {
-            return select(t > 0.008856f, pow(t, 0.33333f), 7.787f * t + 0.137931f);
-        }
 };
 
 #endif
