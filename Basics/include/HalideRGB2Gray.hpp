@@ -24,7 +24,7 @@ class HalideRGB2Gray : public Generator<HalideRGB2Gray> {
             // Expr Gray = 0.299f * R + 0.587f * G + 0.114f * B;
             grayscale(x, y, c) = input_f32(x, y, .299f * R + 0.587f * G + 0.114f * B);
 
-            img_output(x, y, c) = u8(grayscale);
+            img_output(x, y, c) = u8(grayscale(x, y, c));
             // img_output(x, y, c) = clamp(grayscale(x, y), 0, 1);
         }
 
