@@ -11,7 +11,7 @@ IMAGE_IO_FLAGS = -ljpeg `libpng-config --cflags --ldflags`
 TARGET=host
 
 ifndef AUTOSCHEDULER
-	AUTOSCHEDULER=false
+	AUTOSCHEDULER=true
 endif
 ifeq ($(AUTO_SCHEDULE), true)
 	ifndef AUTO_SCHEDULER
@@ -55,6 +55,5 @@ bin/main: src/main.cpp bin/rgb2gray.o
 test: bin/main
 	@mkdir -p outputs
 	@for i in `find $(PATH_IN) -type f -name "*.jpg"`; do $^ $$i $(OUT_PREFIX)_`basename $$i`; done
-	#@pytest
 
 .PHONY: all clean
